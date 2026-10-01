@@ -1,0 +1,571 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>一心珈琲のご紹介</title>
+<style>
+  /*
+    Design plan
+    Layout: single-column scrolling landing page; dark hero opens the story,
+    alternating cream/white bands give each section its own beat, a slim
+    sticky bar keeps the CTA reachable while reading.
+    Color: --bg/--surface (cream/white bands), --ink (brown-black text),
+           --accent (terracotta), --accent-2 (warm gold), --muted (soft brown-grey)
+    Type: "Noto Serif JP" for display/headings, "Noto Sans JP" for body/UI
+  */
+  :root {
+    --bg: #faf6ef;
+    --surface: #ffffff;
+    --card: #f7f3ea;
+    --border: #e4dcc9;
+    --ink: #2b2620;
+    --muted: #6b6356;
+    --accent: #c25b2e;
+    --accent-ink: #fff8f1;
+    --accent-soft: #fdf3ea;
+    --accent-2: #a8622f;
+    --hero-bg-1: #2a1c12;
+    --hero-bg-2: #4a2a16;
+    --hero-fg: #f3ede1;
+    --hero-muted: #d8cfc0;
+    --hero-accent: #e0a361;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17130e;
+      --surface: #201a13;
+      --card: #251e16;
+      --border: #3a3022;
+      --ink: #f3ede1;
+      --muted: #b8ae9c;
+      --accent: #e08249;
+      --accent-ink: #231304;
+      --accent-soft: #2e2115;
+      --accent-2: #e0a361;
+      --hero-bg-1: #120d08;
+      --hero-bg-2: #2c1b0f;
+      --hero-fg: #f3ede1;
+      --hero-muted: #cdc1ad;
+      --hero-accent: #e0a361;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #17130e;
+    --surface: #201a13;
+    --card: #251e16;
+    --border: #3a3022;
+    --ink: #f3ede1;
+    --muted: #b8ae9c;
+    --accent: #e08249;
+    --accent-ink: #231304;
+    --accent-soft: #2e2115;
+    --accent-2: #e0a361;
+    --hero-bg-1: #120d08;
+    --hero-bg-2: #2c1b0f;
+    --hero-fg: #f3ede1;
+    --hero-muted: #cdc1ad;
+    --hero-accent: #e0a361;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Noto Sans JP", "Hiragino Sans", sans-serif;
+    margin: 0;
+    line-height: 1.85;
+  }
+  h1, h2, h3 { font-family: "Noto Serif JP", serif; text-wrap: balance; }
+  a { color: inherit; }
+  img { max-width: 100%; }
+
+  .bar {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 16px;
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--border);
+  }
+  .bar .mark { font-size: 12.5px; font-weight: 700; letter-spacing: 0.06em; }
+  .bar .mark b { color: var(--accent); }
+  .bar .btn-sm {
+    font-size: 12.5px;
+    font-weight: 700;
+    background: var(--accent);
+    color: var(--accent-ink);
+    padding: 7px 13px;
+    border-radius: 999px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  section { padding: 56px 16px; }
+  .band-cream { background: var(--bg); }
+  .band-white { background: var(--surface); }
+  .inner { max-width: 640px; margin: 0 auto; }
+  .eyebrow {
+    display: inline-block;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 5px 11px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+  h2 {
+    font-size: clamp(20px, 4.2vw, 25px);
+    margin: 0 0 18px;
+  }
+  .lead { color: var(--muted); font-size: 15px; margin: 0 0 22px; }
+
+  /* hero */
+  .hero {
+    background: radial-gradient(130% 110% at 15% 10%, var(--hero-bg-2) 0%, var(--hero-bg-1) 65%);
+    color: var(--hero-fg);
+    padding: 72px 16px 60px;
+  }
+  .hero .inner { max-width: 600px; }
+  .hero .kicker {
+    font-size: 11.5px;
+    letter-spacing: 0.22em;
+    color: var(--hero-accent);
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: clamp(28px, 7vw, 40px);
+    line-height: 1.45;
+    margin: 0 0 16px;
+  }
+  .hero h1 .accent { color: var(--hero-accent); }
+  .hero .tagline {
+    font-family: "Noto Serif JP", serif;
+    font-size: 15.5px;
+    color: var(--hero-accent);
+    margin: 0 0 18px;
+  }
+  .hero p.lead { color: var(--hero-muted); max-width: 440px; margin-bottom: 30px; }
+  .hero .cta-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-weight: 700;
+    font-size: 14.5px;
+    padding: 13px 24px;
+    border-radius: 999px;
+    text-decoration: none;
+  }
+  .btn-ghost {
+    display: inline-block;
+    border: 1px solid color-mix(in srgb, var(--hero-fg) 35%, transparent);
+    color: var(--hero-fg);
+    font-weight: 700;
+    font-size: 14.5px;
+    padding: 12px 23px;
+    border-radius: 999px;
+    text-decoration: none;
+  }
+
+  /* pain list */
+  .pain-list { list-style: none; margin: 0; padding: 0; }
+  .pain-list li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 15.5px;
+  }
+  .pain-list li:last-child { border-bottom: none; }
+  .pain-list .q {
+    flex-shrink: 0;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-family: "Noto Serif JP", serif;
+    font-weight: 700;
+    font-size: 12.5px;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 2px;
+  }
+
+  /* benefit grid */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 6px;
+  }
+  @media (max-width: 480px) { .grid-2 { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 16px;
+    min-width: 0;
+  }
+  .card .num {
+    display: inline-flex;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-family: "Noto Serif JP", serif;
+    font-weight: 700;
+    font-size: 13px;
+    align-items: center; justify-content: center;
+    margin-bottom: 10px;
+  }
+  .card h3 { font-size: 15px; margin: 0 0 6px; }
+  .card p { font-size: 13.5px; color: var(--muted); margin: 0; }
+
+  /* table */
+  .tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 4px; }
+  .tbl th, .tbl td {
+    border-bottom: 1px solid var(--border);
+    padding: 10px 8px;
+    text-align: left;
+    vertical-align: top;
+  }
+  .tbl th { color: var(--muted); font-weight: 700; font-size: 12px; }
+  .tbl td.num, .tbl th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .tbl-wrap { overflow-x: auto; }
+
+  /* callout */
+  .callout {
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 18px 18px;
+    margin: 20px 0;
+  }
+  .callout .big {
+    font-family: "Noto Serif JP", serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .callout .sub { font-size: 13.5px; color: var(--muted); }
+
+  .stat-row { display: flex; gap: 10px; margin: 18px 0; flex-wrap: wrap; }
+  .stat {
+    flex: 1 1 100px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 10px;
+    text-align: center;
+  }
+  .stat .n {
+    font-family: "Noto Serif JP", serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+  }
+  .stat .l { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+
+  /* qa */
+  .qa { padding: 16px 0; border-bottom: 1px solid var(--border); }
+  .qa:last-child { border-bottom: none; }
+  .qa .q { font-weight: 700; font-size: 14.5px; }
+  .qa .q .mark { color: var(--accent); margin-right: 6px; }
+  .qa .a { font-size: 13.5px; color: var(--muted); margin-top: 6px; }
+  .qa .a .mark { color: var(--accent); font-weight: 700; margin-right: 6px; }
+
+  /* closing */
+  .closing {
+    background: radial-gradient(130% 110% at 85% 10%, var(--hero-bg-2) 0%, var(--hero-bg-1) 65%);
+    color: var(--hero-fg);
+    border-radius: 20px;
+    padding: 44px 24px;
+    text-align: center;
+  }
+  .closing h2 { color: var(--hero-fg); }
+  .closing p { color: var(--hero-muted); font-size: 14.5px; margin: 0 0 24px; }
+  .contact-block {
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid color-mix(in srgb, var(--hero-fg) 20%, transparent);
+    font-size: 13px;
+    color: var(--hero-muted);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+  .copy-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: color-mix(in srgb, var(--hero-fg) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--hero-fg) 20%, transparent);
+    border-radius: 999px;
+    padding: 7px 8px 7px 14px;
+  }
+  .copy-row span { user-select: all; font-size: 13px; }
+  .copy-btn {
+    appearance: none;
+    border: none;
+    background: var(--hero-accent);
+    color: var(--hero-bg-1);
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 6px 11px;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .hours { font-size: 12.5px; }
+
+  footer {
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--muted);
+    padding: 24px 16px 40px;
+  }
+</style>
+
+<div class="bar">
+  <div class="mark">備長炭焙煎珈琲 <b>一心珈琲</b></div>
+  <a class="btn-sm" href="https://forms.gle/x6mDJ71grXxpAhT19">試供品を申し込む</a>
+</div>
+
+<section class="hero">
+  <div class="inner">
+    <div class="kicker">炭の火が、甘みを引き出す。</div>
+    <h1>備長炭焙煎珈琲<br><span class="accent">「一心」</span>のご紹介</h1>
+    <div class="tagline">日本伝統の備長炭と、珈琲文化の融合。</div>
+    <p class="lead">一杯のコーヒーが、お客様の「また来たい」をつくる。コーヒーのことは、すべて一心珈琲にお任せください。</p>
+    <div class="cta-row">
+      <a class="btn" href="https://forms.gle/x6mDJ71grXxpAhT19">試供品を申し込む</a>
+      <a class="btn-ghost" href="#about">くわしく見る</a>
+    </div>
+  </div>
+</section>
+
+<section class="band-white">
+  <div class="inner">
+    <div class="eyebrow">01</div>
+    <h2>こんなお悩みはありませんか?</h2>
+    <ul class="pain-list">
+      <li><span class="q">?</span>客単価を、もう一段上げたい</li>
+      <li><span class="q">?</span>コーヒーを出していないことで、実は売上の機会を逃しているかもしれない</li>
+      <li><span class="q">?</span>コーヒーを出したいけれど、何から始めればいいかわからない</li>
+      <li><span class="q">?</span>新しいメニューを増やすのは、コストも手間もかかりそうで踏み出せない</li>
+    </ul>
+  </div>
+</section>
+
+<section class="band-cream">
+  <div class="inner">
+    <div class="eyebrow">02</div>
+    <h2>一心珈琲にできること</h2>
+    <p class="lead" style="margin-bottom:24px;">
+      一心珈琲は、そのお悩みを解消するお手伝いができます。豆選びも、焙煎も、価格の設計も ― コーヒーに関することは、すべて一心珈琲が担います。貴店には、できるだけ初期費用を最小限に抑えた形で、新しい一杯をお客様にお届けいただけます。
+    </p>
+    <div class="grid-2">
+      <div class="card">
+        <span class="num">1</span>
+        <h3>客単価の向上が見込めます</h3>
+        <p>コーヒーが「来店理由」そのものになることで、客単価の向上が見込めます。</p>
+      </div>
+      <div class="card">
+        <span class="num">2</span>
+        <h3>新たな来店のきっかけにも</h3>
+        <p>コーヒー目当てでご来店されたお客様が、ランチなど他のメニューもあわせて注文されるケースもあります。</p>
+      </div>
+      <div class="card">
+        <span class="num">3</span>
+        <h3>導入・運用の負担が少ない</h3>
+        <p>豆選び・焙煎は一心珈琲が設計。精神的にも実務的にも、負担を抑えて始められます。</p>
+      </div>
+      <div class="card">
+        <span class="num">4</span>
+        <h3>低コストでオリジナルコーヒーを</h3>
+        <p>単一プランでもブレンドプランでも、低コストで「このお店だけの味」を開発・展開できます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band-white" id="about">
+  <div class="inner">
+    <div class="eyebrow">03</div>
+    <h2>一心珈琲について</h2>
+    <p class="lead" style="margin-bottom:0;">
+      一心珈琲は、<strong style="color:var(--accent)">備長炭による直火焙煎</strong>にこだわった珈琲ブランドです。電気やガスの焙煎機にはない、炭火ならではのじっくりとした熱の入り方が、豆本来の甘みと香りを引き出します。
+    </p>
+  </div>
+</section>
+
+<section class="band-cream">
+  <div class="inner">
+    <div class="eyebrow">04</div>
+    <h2>商品ラインナップ ― 選べる一杯</h2>
+    <h3 style="font-size:15px;margin:0 0 8px;">実績100種類以上の豆から</h3>
+    <p class="lead">一心珈琲では、これまでに<strong style="color:var(--accent)">100種類以上</strong>の豆を取り扱ってきた実績があります。下表はその一例です。</p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <tr><th>産地</th><th>風味の特徴</th></tr>
+        <tr><td>東アフリカ産</td><td>柑橘を思わせる軽やかな酸味とすっきりした後味</td></tr>
+        <tr><td>南米産</td><td>酸味と甘みのバランスが取れた、飲みやすい味わい</td></tr>
+        <tr><td>南米産</td><td>酸味は控えめで、ナッツやミルクチョコのような穏やかな甘み</td></tr>
+        <tr><td>東南アジア産</td><td>ハーブを思わせる香りと、しっかりとしたボディ感</td></tr>
+        <tr><td>中米産</td><td>チョコレートやキャラメルを思わせるコクと、ほのかなスパイス感</td></tr>
+        <tr><td>東アフリカ産</td><td>ベリーや柑橘を思わせる華やかな酸味と複雑な香り</td></tr>
+        <tr><td>南米産</td><td>フルーティーな酸味とキャラメルの甘みを両立した上品な味わい</td></tr>
+        <tr><td>東南アジア産</td><td>ハーブ感と滑らかなコクを両立した、重厚で上質な味わい</td></tr>
+        <tr><td>中米産</td><td>ジャスミンを思わせる華やかな香りと、軽やかな飲み心地</td></tr>
+      </table>
+    </div>
+    <h3 style="font-size:15px;margin:22px 0 8px;">単一プラン・ブレンドプラン、両方からお選びいただけます</h3>
+    <p class="lead" style="margin-bottom:0;">
+      基本となるのは、<strong style="color:var(--accent)">一つの産地の個性をそのまま活かす「単一プラン」</strong>です。さらに、複数の豆を組み合わせて貴店オリジナルの味わいをつくる<strong style="color:var(--accent)">「ブレンドプラン」</strong>もご用意しております。
+    </p>
+  </div>
+</section>
+
+<section class="band-white">
+  <div class="inner">
+    <div class="eyebrow">05</div>
+    <h2>導入事例:宮崎市役所前のレストラン様</h2>
+    <p class="lead">
+      ランチタイムの平均来客数は10名/日。朝の空き時間帯を有効活用したいというご相談から、一心珈琲の導入が始まりました。
+    </p>
+    <div class="callout">
+      <span class="big">客単価 +37.5%</span>
+      <span class="sub">コーヒー導入で、ランチのお客様単価が800円から1,100円へアップしました。</span>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><span class="n">75%</span><span class="l">コーヒーの<br>オーダー率</span></div>
+      <div class="stat"><span class="n">80%+</span><span class="l">リピート率</span></div>
+      <div class="stat"><span class="n">60%+</span><span class="l">ランチ+コーヒー<br>目的の来店</span></div>
+    </div>
+    <p class="lead" style="margin-bottom:0;">
+      来店されるお客様の75%がコーヒーをご注文し、客単価は800円から1,100円へ37.5%増加。リピート率は80%を超え、「コーヒーがあるから、また行く」という来店理由そのものになっています。
+    </p>
+  </div>
+</section>
+
+<section class="band-cream">
+  <div class="inner">
+    <div class="eyebrow">06</div>
+    <h2>価格の目安</h2>
+    <div class="callout">
+      <span class="big">卸先利益率 約63%</span>
+      <span class="sub">宮崎市役所前のレストラン様(左の事例)での実績です。</span>
+    </div>
+    <p class="lead">貴店の業態・客層に合わせて、3つのセレクトから最適な一杯をご提案します。</p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <tr><th>プラン</th><th>想定業態</th><th class="num">店頭価格目安</th></tr>
+        <tr><td>デイリーセレクト</td><td>ベーカリー・食堂系など、回転重視の店舗様</td><td class="num">350円</td></tr>
+        <tr><td>シグネチャーセレクト</td><td>カフェ・飲食店様のメインドリンクとして</td><td class="num">400円</td></tr>
+        <tr><td>限定セレクト</td><td>こだわり系カフェ・専門店・高価格帯店舗様</td><td class="num">500円</td></tr>
+      </table>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:14px;">※具体的な卸価格・導入条件・お見積りは、ご相談の中で個別にご案内します。</p>
+  </div>
+</section>
+
+<section class="band-white">
+  <div class="inner">
+    <div class="eyebrow">07</div>
+    <h2>試供品のご案内</h2>
+    <p class="lead">
+      まずは実際に飲んでご判断いただけるよう、<strong style="color:var(--accent)">シグネチャーセレクト(プレミアムグレード)</strong>から4種類の試供品をご用意いたしております。気になった1杯をお選びください。20gの豆をそのまま無料でお送りいたします。
+    </p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <tr><th>産地</th><th>風味の特徴</th><th>焙煎度</th></tr>
+        <tr><td>東アフリカ産</td><td>ベリーや柑橘を思わせる華やかな酸味と複雑な香り</td><td>中煎り</td></tr>
+        <tr><td>南米産</td><td>フルーティーな酸味とキャラメルの甘みを両立した上品な味わい</td><td>中煎り</td></tr>
+        <tr><td>南米産</td><td>低酸味でまろやか、キャラメルやはちみつを思わせる甘み</td><td>中深煎り</td></tr>
+        <tr><td>中米産</td><td>ジャスミンを思わせる華やかな香りと、軽やかな飲み心地</td><td>中〜中深煎り</td></tr>
+      </table>
+    </div>
+    <p class="lead" style="margin:16px 0 20px;">
+      試供品は、お食事と合わせて楽しんでいただくことを前提に焙煎度を調整しています。また、いずれの豆もブラックはもちろん、<strong style="color:var(--accent)">カフェラテ・カプチーノなどミルク系メニューとの相性も良好</strong>です。
+    </p>
+    <a class="btn" href="https://forms.gle/x6mDJ71grXxpAhT19">試供品を申し込む</a>
+  </div>
+</section>
+
+<section class="band-cream">
+  <div class="inner">
+    <div class="eyebrow">08</div>
+    <h2>よくあるご質問</h2>
+    <div class="qa">
+      <div class="q"><span class="mark">Q.</span>味のばらつきが心配です。</div>
+      <div class="a"><span class="mark">A.</span>すべて備長炭による直火焙煎で、豆本来の個性を活かした一貫した品質でお届けします。単一プランは配合による味のブレがない分、安定した一杯をご提供できます。</div>
+    </div>
+    <div class="qa">
+      <div class="q"><span class="mark">Q.</span>単一プランとブレンドプラン、どちらを選べばいいですか?</div>
+      <div class="a"><span class="mark">A.</span>まずは始めやすい単一プランから導入される店舗様が多いです。「このお店だけの味」を打ち出したい場合は、ブレンドプランもご相談いただけます。</div>
+    </div>
+    <div class="qa">
+      <div class="q"><span class="mark">Q.</span>抽出に特別な技術は必要ですか?</div>
+      <div class="a"><span class="mark">A.</span>いいえ。専用マシンでの抽出が基本のため、特別なスキルや研修は不要です。忙しいランチタイムでも、すぐにご提供いただけます。</div>
+    </div>
+    <div class="qa">
+      <div class="q"><span class="mark">Q.</span>試供品はどのように選べますか?</div>
+      <div class="a"><span class="mark">A.</span>お申し込みフォームから、気になった1杯をお選びください。20gの豆を無料でお送りします。</div>
+    </div>
+  </div>
+</section>
+
+<section class="band-white">
+  <div class="inner">
+    <div class="closing">
+      <h2>まずは、試供品から始めてみませんか。</h2>
+      <p>一杯のコーヒーが、貴店の「来店理由」になる。コーヒーのことは、すべて一心珈琲にお任せください。</p>
+      <a class="btn" href="https://forms.gle/x6mDJ71grXxpAhT19">試供品を申し込む</a>
+      <div class="contact-block">
+        <div class="copy-row">
+          <span id="email-addr">ishinsei9801@gmail.com</span>
+          <button class="copy-btn" id="copy-btn" type="button">コピー</button>
+        </div>
+        <div class="hours">受付時間 7:00〜20:00</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>備長炭焙煎「一心珈琲」</footer>
+
+<script>
+(function () {
+  "use strict";
+  var btn = document.getElementById("copy-btn");
+  var addr = document.getElementById("email-addr");
+  if (!btn || !addr) return;
+  btn.addEventListener("click", async function () {
+    var text = addr.textContent;
+    try {
+      await navigator.clipboard.writeText(text);
+      btn.textContent = "コピーしました";
+    } catch (e) {
+      var range = document.createRange();
+      range.selectNodeContents(addr);
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      btn.textContent = "選択しました";
+    }
+    setTimeout(function () { btn.textContent = "コピー"; }, 2000);
+  });
+})();
+</script>
+
+</body></html>
